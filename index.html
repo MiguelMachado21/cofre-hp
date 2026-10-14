@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cofre Mágico</title>
+<meta name="theme-color" content="#0b1020">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cofre Mágico">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars" aria-hidden="true"></div>
+
+<header class="topo">
+  <h1>Cofre Mágico</h1>
+  <p class="lema">registro de galeões, sicles e nuques</p>
+</header>
+
+<main>
+  <nav class="mes">
+    <button id="mesAnt" aria-label="Mês anterior">‹</button>
+    <h2 id="mesTitulo">—</h2>
+    <button id="mesProx" aria-label="Próximo mês">›</button>
+  </nav>
+
+  <section class="pergaminho saldo">
+    <p class="rotulo">Saldo do mês (já realizado)</p>
+    <p class="grande" id="saldoReal">R$ 0,00</p>
+    <p class="sub">Previsto ao fim do mês: <strong id="saldoPrev">R$ 0,00</strong></p>
+    <div class="cards">
+      <div class="card in">
+        <span>Entradas</span>
+        <b id="entReal">R$ 0,00</b>
+        <small>+ <span id="entPrev">R$ 0,00</span> a receber</small>
+      </div>
+      <div class="card out">
+        <span>Saídas</span>
+        <b id="saiReal">R$ 0,00</b>
+        <small>+ <span id="saiPrev">R$ 0,00</span> a pagar</small>
+      </div>
+    </div>
+  </section>
+
+  <div class="abas" role="tablist">
+    <button class="aba ativa" data-aba="lista">Lançamentos</button>
+    <button class="aba" data-aba="graficos">Gráficos</button>
+    <button class="aba" data-aba="ajustes">Ajustes</button>
+  </div>
+
+  <section id="aba-lista" class="painel">
+    <div class="filtros">
+      <button class="chip ativo" data-filtro="todos">Todos</button>
+      <button class="chip" data-filtro="entrada">Entradas</button>
+      <button class="chip" data-filtro="saida">Saídas</button>
+      <button class="chip" data-filtro="previsto">Pendentes</button>
+    </div>
+    <ul id="lista" class="lista"></ul>
+    <p id="vazio" class="vazio">Nenhum lançamento neste mês.<br>Toque na varinha para adicionar ✨</p>
+  </section>
+
+  <section id="aba-graficos" class="painel" hidden>
+    <div class="pergaminho">
+      <h3>Visão de 6 meses</h3>
+      <p class="sub">3 meses antes e 2 depois do mês atual (inclui previstos)</p>
+      <div class="legenda"><span class="dot in"></span>Entradas <span class="dot out"></span>Saídas</div>
+      <div id="grafMeses"></div>
+    </div>
+    <div class="pergaminho">
+      <h3>Saídas por categoria</h3>
+      <div id="grafCat"></div>
+    </div>
+    <div class="pergaminho">
+      <h3>Entradas por categoria</h3>
+      <div id="grafCatIn"></div>
+    </div>
+  </section>
+
+  <section id="aba-ajustes" class="painel" hidden>
+    <div class="pergaminho">
+      <h3>Cor da casa</h3>
+      <div class="casas">
+        <button data-casa="escarlate" style="--c:#8b1e1e;--d:#d4a73a">Escarlate</button>
+        <button data-casa="esmeralda" style="--c:#1a4d33;--d:#b8c2c8">Esmeralda</button>
+        <button data-casa="safira" style="--c:#1b2f5c;--d:#a9793d">Safira</button>
+        <button data-casa="ambar" style="--c:#7a5a10;--d:#2b2b2b">Âmbar</button>
+      </div>
+    </div>
+    <div class="pergaminho">
+      <h3>Backup</h3>
+      <p class="sub">Seus dados ficam guardados só neste aparelho. Faça backup de vez em quando.</p>
+      <div class="botoes">
+        <button id="exportar" class="btn">Baixar backup</button>
+        <label class="btn">Restaurar backup<input type="file" id="importar" accept=".json,application/json" hidden></label>
+      </div>
+    </div>
+    <div class="pergaminho">
+      <h3>Zona proibida</h3>
+      <button id="apagarTudo" class="btn perigo">Apagar todos os dados</button>
+    </div>
+  </section>
+</main>
+
+<button id="fab" class="fab" aria-label="Novo lançamento">🪄</button>
+
+<dialog id="modal">
+  <form id="form" method="dialog" class="pergaminho">
+    <h3 id="formTitulo">Novo lançamento</h3>
+    <div class="tipo">
+      <label><input type="radio" name="tipo" value="entrada" checked><span>Entrada</span></label>
+      <label><input type="radio" name="tipo" value="saida"><span>Saída</span></label>
+    </div>
+    <label class="campo">Valor (R$)
+      <input id="fValor" inputmode="decimal" placeholder="0,00" required autocomplete="off">
+    </label>
+    <label class="campo">Descrição
+      <input id="fDesc" placeholder="Ex.: Salário, Aluguel…" required maxlength="60">
+    </label>
+    <label class="campo">Categoria
+      <input id="fCat" list="cats" placeholder="Ex.: Moradia" maxlength="30">
+      <datalist id="cats"></datalist>
+    </label>
+    <label class="campo">Data
+      <input id="fData" type="date" required>
+    </label>
+    <label class="check">
+      <input id="fFeito" type="checkbox" checked>
+      <span id="fFeitoTxt">Já recebi</span>
+    </label>
+    <label class="campo">Repetir nos próximos meses
+      <select id="fRepetir">
+        <option value="0">Não repetir</option>
+        <option value="2">2 meses</option>
+        <option value="3">3 meses</option>
+        <option value="6">6 meses</option>
+        <option value="12">12 meses</option>
+      </select>
+    </label>
+    <div class="botoes">
+      <button type="button" id="cancelar" class="btn fantasma">Cancelar</button>
+      <button type="submit" class="btn">Salvar</button>
+    </div>
+    <button type="button" id="excluir" class="btn perigo" hidden>Excluir</button>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
