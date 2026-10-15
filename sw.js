@@ -1,5 +1,5 @@
 // Faz o app abrir mesmo sem internet. Ao mudar arquivos, troque a versão abaixo.
-const CACHE = 'cofre-v1';
+const CACHE = 'cofre-v2';
 const ARQS = ['./', 'index.html', 'style.css', 'app.js', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARQS))); self.skipWaiting(); });
 self.addEventListener('activate', e => {

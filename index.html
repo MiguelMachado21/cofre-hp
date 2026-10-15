@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cofre Mágico</title>
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#06140e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -17,45 +17,59 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="stars" aria-hidden="true"></div>
+<div class="lago" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="prata" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2f5f7"/><stop offset=".5" stop-color="#aeb8be"/><stop offset="1" stop-color="#e3e8eb"/>
+    </linearGradient>
+    <symbol id="i-lista" viewBox="0 0 24 24"><path d="M6 3h11a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6M6 3a2 2 0 0 0-2 2v1h4V5a2 2 0 0 0-2-2Zm0 18a2 2 0 0 1-2-2v-1h4v1a2 2 0 0 1-2 2ZM10 8h6M10 12h6M10 16h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-cofre" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="11.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v1.2M12 13.8V15M8.5 11.5h1.2M14.3 11.5h1.2M6 19v2M18 19v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-graf" viewBox="0 0 24 24"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-ajuste" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  </defs>
+</svg>
 
 <header class="topo">
+  <svg class="serpente" viewBox="0 0 120 70" aria-hidden="true">
+    <path d="M8 52c10 12 30 12 38-2s0-28 14-34 30 6 26 20-22 14-22 4 14-10 18-2" fill="none" stroke="url(#prata)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M82 38c6-4 14-4 20 2-4 6-12 8-20 4z" fill="url(#prata)"/>
+    <circle cx="96" cy="40" r="1.6" fill="#0b2a1c"/>
+    <path d="M102 40l8-2m-8 2l8 3" stroke="#3fbf7f" stroke-width="1.2" stroke-linecap="round"/>
+  </svg>
   <h1>Cofre Mágico</h1>
-  <p class="lema">registro de galeões, sicles e nuques</p>
+  <p class="lema">a ambição guarda cada galeão</p>
 </header>
 
 <main>
-  <nav class="mes">
+  <nav class="mes" id="navMes">
     <button id="mesAnt" aria-label="Mês anterior">‹</button>
     <h2 id="mesTitulo">—</h2>
     <button id="mesProx" aria-label="Próximo mês">›</button>
   </nav>
 
-  <section class="pergaminho saldo">
-    <p class="rotulo">Saldo do mês (já realizado)</p>
-    <p class="grande" id="saldoReal">R$ 0,00</p>
-    <p class="sub">Previsto ao fim do mês: <strong id="saldoPrev">R$ 0,00</strong></p>
-    <div class="cards">
-      <div class="card in">
-        <span>Entradas</span>
-        <b id="entReal">R$ 0,00</b>
-        <small>+ <span id="entPrev">R$ 0,00</span> a receber</small>
-      </div>
-      <div class="card out">
-        <span>Saídas</span>
-        <b id="saiReal">R$ 0,00</b>
-        <small>+ <span id="saiPrev">R$ 0,00</span> a pagar</small>
-      </div>
-    </div>
-  </section>
-
-  <div class="abas" role="tablist">
-    <button class="aba ativa" data-aba="lista">Lançamentos</button>
-    <button class="aba" data-aba="graficos">Gráficos</button>
-    <button class="aba" data-aba="ajustes">Ajustes</button>
-  </div>
-
+  <!-- LANÇAMENTOS -->
   <section id="aba-lista" class="painel">
+    <div class="pedra saldo">
+      <p class="rotulo">Saldo do mês · realizado</p>
+      <p class="grande" id="saldoReal">R$ 0,00</p>
+      <p class="sub">Previsto ao fim do mês: <strong id="saldoPrev">R$ 0,00</strong></p>
+      <div class="cards">
+        <div class="card in">
+          <span>Entradas</span>
+          <b id="entReal">R$ 0,00</b>
+          <small>+ <span id="entPrev">R$ 0,00</span> a receber</small>
+        </div>
+        <div class="card out">
+          <span>Saídas</span>
+          <b id="saiReal">R$ 0,00</b>
+          <small>+ <span id="saiPrev">R$ 0,00</span> a pagar</small>
+        </div>
+      </div>
+      <p class="guardado" id="linhaGuardado" hidden></p>
+    </div>
+
     <div class="filtros">
       <button class="chip ativo" data-filtro="todos">Todos</button>
       <button class="chip" data-filtro="entrada">Entradas</button>
@@ -63,37 +77,71 @@
       <button class="chip" data-filtro="previsto">Pendentes</button>
     </div>
     <ul id="lista" class="lista"></ul>
-    <p id="vazio" class="vazio">Nenhum lançamento neste mês.<br>Toque na varinha para adicionar ✨</p>
+    <p id="vazio" class="vazio">Nenhum lançamento neste mês.<br>Toque na varinha para adicionar.</p>
   </section>
 
+  <!-- POUPANÇA -->
+  <section id="aba-cofre" class="painel" hidden>
+    <div class="pedra saldo cofre">
+      <p class="rotulo">Total guardado no cofre</p>
+      <p class="grande prata" id="pTotal">R$ 0,00</p>
+      <p class="sub" id="pMesTxt">Neste mês: —</p>
+      <div id="metaBox" class="meta" hidden>
+        <div class="top"><span id="metaNome">Meta</span><span id="metaPct">0%</span></div>
+        <div class="trilho"><div class="enche" id="metaBarra"></div></div>
+        <small id="metaFalta"></small>
+      </div>
+      <div class="cards tres">
+        <div class="card dep"><span>Guardado</span><b id="pDep">R$ 0,00</b></div>
+        <div class="card ren"><span>Rendeu</span><b id="pRen">R$ 0,00</b></div>
+        <div class="card res"><span>Retirado</span><b id="pRes">R$ 0,00</b></div>
+      </div>
+    </div>
+
+    <div class="pedra">
+      <h3>Evolução do cofre</h3>
+      <div id="grafCofre"></div>
+    </div>
+
+    <h3 class="titulo-lista">Movimentos do mês</h3>
+    <ul id="listaCofre" class="lista"></ul>
+    <p id="vazioCofre" class="vazio">Nada guardado neste mês ainda.</p>
+  </section>
+
+  <!-- GRÁFICOS -->
   <section id="aba-graficos" class="painel" hidden>
-    <div class="pergaminho">
+    <div class="pedra">
       <h3>Visão de 6 meses</h3>
-      <p class="sub">3 meses antes e 2 depois do mês atual (inclui previstos)</p>
-      <div class="legenda"><span class="dot in"></span>Entradas <span class="dot out"></span>Saídas</div>
+      <p class="sub">3 meses antes e 2 depois do mês escolhido (inclui previstos)</p>
+      <div class="legenda"><span class="dot in"></span>Entradas <span class="dot out"></span>Saídas <span class="dot dep"></span>Guardado</div>
       <div id="grafMeses"></div>
     </div>
-    <div class="pergaminho">
+    <div class="pedra">
       <h3>Saídas por categoria</h3>
       <div id="grafCat"></div>
     </div>
-    <div class="pergaminho">
+    <div class="pedra">
       <h3>Entradas por categoria</h3>
       <div id="grafCatIn"></div>
     </div>
   </section>
 
+  <!-- AJUSTES -->
   <section id="aba-ajustes" class="painel" hidden>
-    <div class="pergaminho">
-      <h3>Cor da casa</h3>
-      <div class="casas">
-        <button data-casa="escarlate" style="--c:#8b1e1e;--d:#d4a73a">Escarlate</button>
-        <button data-casa="esmeralda" style="--c:#1a4d33;--d:#b8c2c8">Esmeralda</button>
-        <button data-casa="safira" style="--c:#1b2f5c;--d:#a9793d">Safira</button>
-        <button data-casa="ambar" style="--c:#7a5a10;--d:#2b2b2b">Âmbar</button>
-      </div>
+    <div class="pedra">
+      <h3>Cofre (poupança)</h3>
+      <label class="campo">Quanto você já tinha guardado antes de usar o app
+        <input id="aInicial" inputmode="decimal" placeholder="0,00">
+      </label>
+      <label class="campo">Nome da meta
+        <input id="aMetaNome" placeholder="Ex.: Reserva de emergência" maxlength="40">
+      </label>
+      <label class="campo">Valor da meta
+        <input id="aMetaValor" inputmode="decimal" placeholder="0,00 (deixe vazio para não usar)">
+      </label>
+      <button id="salvarCofre" class="btn">Salvar</button>
     </div>
-    <div class="pergaminho">
+    <div class="pedra">
       <h3>Backup</h3>
       <p class="sub">Seus dados ficam guardados só neste aparelho. Faça backup de vez em quando.</p>
       <div class="botoes">
@@ -101,29 +149,36 @@
         <label class="btn">Restaurar backup<input type="file" id="importar" accept=".json,application/json" hidden></label>
       </div>
     </div>
-    <div class="pergaminho">
-      <h3>Zona proibida</h3>
+    <div class="pedra">
+      <h3>Seção restrita</h3>
       <button id="apagarTudo" class="btn perigo">Apagar todos os dados</button>
     </div>
   </section>
 </main>
 
-<button id="fab" class="fab" aria-label="Novo lançamento">🪄</button>
+<button id="fab" class="fab" aria-label="Novo lançamento">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 16 8" stroke="url(#prata)" stroke-width="2.6" stroke-linecap="round"/><path d="M16 8l2-2" stroke="#e8edf0" stroke-width="2.6" stroke-linecap="round"/><path d="M19 2v3M17.5 3.5h3M8 4v2M7 5h2M20 11v2M19 12h2" stroke="#7ff0b3" stroke-width="1.3" stroke-linecap="round"/></svg>
+</button>
+
+<nav class="abas" role="tablist">
+  <button class="aba ativa" data-aba="lista"><svg><use href="#i-lista"/></svg>Lançamentos</button>
+  <button class="aba" data-aba="cofre"><svg><use href="#i-cofre"/></svg>Cofre</button>
+  <button class="aba" data-aba="graficos"><svg><use href="#i-graf"/></svg>Gráficos</button>
+  <button class="aba" data-aba="ajustes"><svg><use href="#i-ajuste"/></svg>Ajustes</button>
+</nav>
 
 <dialog id="modal">
-  <form id="form" method="dialog" class="pergaminho">
+  <form id="form" method="dialog" class="pedra">
     <h3 id="formTitulo">Novo lançamento</h3>
-    <div class="tipo">
-      <label><input type="radio" name="tipo" value="entrada" checked><span>Entrada</span></label>
-      <label><input type="radio" name="tipo" value="saida"><span>Saída</span></label>
-    </div>
+    <div class="tipo" id="tipos"></div>
+    <p class="dica" id="dicaTipo"></p>
     <label class="campo">Valor (R$)
       <input id="fValor" inputmode="decimal" placeholder="0,00" required autocomplete="off">
     </label>
     <label class="campo">Descrição
-      <input id="fDesc" placeholder="Ex.: Salário, Aluguel…" required maxlength="60">
+      <input id="fDesc" placeholder="Ex.: Salário, Aluguel…" maxlength="60">
     </label>
-    <label class="campo">Categoria
+    <label class="campo" id="campoCat">Categoria
       <input id="fCat" list="cats" placeholder="Ex.: Moradia" maxlength="30">
       <datalist id="cats"></datalist>
     </label>
@@ -134,7 +189,7 @@
       <input id="fFeito" type="checkbox" checked>
       <span id="fFeitoTxt">Já recebi</span>
     </label>
-    <label class="campo">Repetir nos próximos meses
+    <label class="campo" id="campoRepetir">Repetir nos próximos meses
       <select id="fRepetir">
         <option value="0">Não repetir</option>
         <option value="2">2 meses</option>
