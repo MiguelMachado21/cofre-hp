@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="lago" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="lago" aria-hidden="true"><span></span><span></span><span></span><img class="marca-dagua" src="serpente.png" alt=""></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -28,31 +28,38 @@
     <symbol id="i-cofre" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="11.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v1.2M12 13.8V15M8.5 11.5h1.2M14.3 11.5h1.2M6 19v2M18 19v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
     <symbol id="i-graf" viewBox="0 0 24 24"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="i-ajuste" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15 15 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   </defs>
 </svg>
 
 <header class="topo">
-  <svg class="serpente" viewBox="0 0 120 70" aria-hidden="true">
-    <path d="M8 52c10 12 30 12 38-2s0-28 14-34 30 6 26 20-22 14-22 4 14-10 18-2" fill="none" stroke="url(#prata)" stroke-width="5" stroke-linecap="round"/>
-    <path d="M82 38c6-4 14-4 20 2-4 6-12 8-20 4z" fill="url(#prata)"/>
-    <circle cx="96" cy="40" r="1.6" fill="#0b2a1c"/>
-    <path d="M102 40l8-2m-8 2l8 3" stroke="#3fbf7f" stroke-width="1.2" stroke-linecap="round"/>
-  </svg>
-  <h1>Cofre Mágico</h1>
-  <p class="lema">a ambição guarda cada galeão</p>
+  <img class="serpente" src="serpente.png" alt="">
+  <div>
+    <h1>Cofre Mágico</h1>
+    <p class="lema">a ambição guarda cada galeão</p>
+  </div>
 </header>
 
 <main>
+  <div id="avisoBackup" class="aviso" hidden>
+    <p>Faz mais de 30 dias sem backup dos seus dados.</p>
+    <div class="botoes">
+      <button class="btn" id="avisoBaixar">Fazer backup</button>
+      <button class="btn fantasma" id="avisoDepois">Depois</button>
+    </div>
+  </div>
+
   <nav class="mes" id="navMes">
     <button id="mesAnt" aria-label="Mês anterior">‹</button>
-    <h2 id="mesTitulo">—</h2>
+    <button id="mesTitulo" class="mes-titulo" title="Voltar para o mês atual">—</button>
     <button id="mesProx" aria-label="Próximo mês">›</button>
   </nav>
 
   <!-- LANÇAMENTOS -->
   <section id="aba-lista" class="painel">
-    <div class="pedra saldo">
-      <p class="rotulo">Saldo do mês · realizado</p>
+    <div class="pedra saldo" id="resumoConta">
+      <p class="conta-linha">Saldo em conta <strong id="saldoConta">R$ 0,00</strong></p>
+      <p class="rotulo">Resultado do mês · realizado</p>
       <p class="grande" id="saldoReal">R$ 0,00</p>
       <p class="sub">Previsto ao fim do mês: <strong id="saldoPrev">R$ 0,00</strong></p>
       <div class="cards">
@@ -68,29 +75,31 @@
         </div>
       </div>
       <p class="guardado" id="linhaGuardado" hidden></p>
+      <p class="alerta" id="linhaLimite" hidden></p>
     </div>
 
-    <div class="filtros">
+    <label class="busca">
+      <svg aria-hidden="true"><use href="#i-busca"/></svg>
+      <input id="busca" type="search" placeholder="Buscar em todos os meses…" autocomplete="off" enterkeyhint="search">
+    </label>
+    <div class="filtros" id="filtros">
       <button class="chip ativo" data-filtro="todos">Todos</button>
       <button class="chip" data-filtro="entrada">Entradas</button>
       <button class="chip" data-filtro="saida">Saídas</button>
       <button class="chip" data-filtro="previsto">Pendentes</button>
+      <button class="chip" data-filtro="fixa">Fixas</button>
     </div>
+    <p id="buscaInfo" class="sub busca-info" hidden></p>
     <ul id="lista" class="lista"></ul>
     <p id="vazio" class="vazio">Nenhum lançamento neste mês.<br>Toque na varinha para adicionar.</p>
   </section>
 
-  <!-- POUPANÇA -->
+  <!-- COFRES -->
   <section id="aba-cofre" class="painel" hidden>
     <div class="pedra saldo cofre">
-      <p class="rotulo">Total guardado no cofre</p>
+      <p class="rotulo">Total guardado nos cofres</p>
       <p class="grande prata" id="pTotal">R$ 0,00</p>
       <p class="sub" id="pMesTxt">Neste mês: —</p>
-      <div id="metaBox" class="meta" hidden>
-        <div class="top"><span id="metaNome">Meta</span><span id="metaPct">0%</span></div>
-        <div class="trilho"><div class="enche" id="metaBarra"></div></div>
-        <small id="metaFalta"></small>
-      </div>
       <div class="cards tres">
         <div class="card dep"><span>Guardado</span><b id="pDep">R$ 0,00</b></div>
         <div class="card ren"><span>Rendeu</span><b id="pRen">R$ 0,00</b></div>
@@ -98,14 +107,17 @@
       </div>
     </div>
 
+    <h3 class="titulo-lista">Seus cofres</h3>
+    <div id="cofres" class="cofres"></div>
+
     <div class="pedra">
-      <h3>Evolução do cofre</h3>
+      <h3>Evolução do total guardado</h3>
       <div id="grafCofre"></div>
     </div>
 
     <h3 class="titulo-lista">Movimentos do mês</h3>
     <ul id="listaCofre" class="lista"></ul>
-    <p id="vazioCofre" class="vazio">Nada guardado neste mês ainda.</p>
+    <p id="vazioCofre" class="vazio">Nada movimentado neste mês ainda.</p>
   </section>
 
   <!-- GRÁFICOS -->
@@ -129,24 +141,41 @@
   <!-- AJUSTES -->
   <section id="aba-ajustes" class="painel" hidden>
     <div class="pedra">
-      <h3>Cofre (poupança)</h3>
-      <label class="campo">Quanto você já tinha guardado antes de usar o app
-        <input id="aInicial" inputmode="decimal" placeholder="0,00">
+      <h3>Conta</h3>
+      <label class="campo">Saldo que já tinha na conta antes de começar a usar o app
+        <input id="aContaInicial" inputmode="decimal" placeholder="0,00">
       </label>
-      <label class="campo">Nome da meta
-        <input id="aMetaNome" placeholder="Ex.: Reserva de emergência" maxlength="40">
-      </label>
-      <label class="campo">Valor da meta
-        <input id="aMetaValor" inputmode="decimal" placeholder="0,00 (deixe vazio para não usar)">
-      </label>
-      <button id="salvarCofre" class="btn">Salvar</button>
+      <label class="check"><input type="checkbox" id="aContaNeg"><span>Esse saldo era negativo</span></label>
+      <button id="salvarConta" class="btn largo">Salvar</button>
     </div>
+
+    <div class="pedra">
+      <h3>Contas fixas</h3>
+      <p class="sub">Entram sozinhas todo mês como pendentes. Toque para editar.</p>
+      <ul id="listaFixas" class="mini-lista"></ul>
+      <button id="novaFixa" class="btn fantasma largo">+ Nova conta fixa</button>
+    </div>
+
+    <div class="pedra">
+      <h3>Limites de gastos</h3>
+      <p class="sub">Avisa quando uma categoria chegar perto ou passar do limite no mês.</p>
+      <ul id="listaLimites" class="mini-lista"></ul>
+      <button id="novoLimite" class="btn fantasma largo">+ Novo limite</button>
+    </div>
+
+    <div class="pedra">
+      <h3>Cofres</h3>
+      <p class="sub">Separe sua poupança por objetivo. Toque para editar.</p>
+      <ul id="listaCofresAj" class="mini-lista"></ul>
+      <button id="novoCofre" class="btn fantasma largo">+ Novo cofre</button>
+    </div>
+
     <div class="pedra">
       <h3>Backup</h3>
-      <p class="sub">Seus dados ficam guardados só neste aparelho. Faça backup de vez em quando.</p>
+      <p class="sub">Seus dados ficam guardados só neste aparelho. <span id="ultimoBackup"></span></p>
       <div class="botoes">
-        <button id="exportar" class="btn">Baixar backup</button>
-        <label class="btn">Restaurar backup<input type="file" id="importar" accept=".json,application/json" hidden></label>
+        <button id="exportar" class="btn">Fazer backup</button>
+        <label class="btn">Restaurar<input type="file" id="importar" accept=".json,application/json" hidden></label>
       </div>
     </div>
     <div class="pedra">
@@ -162,42 +191,41 @@
 
 <nav class="abas" role="tablist">
   <button class="aba ativa" data-aba="lista"><svg><use href="#i-lista"/></svg>Lançamentos</button>
-  <button class="aba" data-aba="cofre"><svg><use href="#i-cofre"/></svg>Cofre</button>
+  <button class="aba" data-aba="cofre"><svg><use href="#i-cofre"/></svg>Cofres</button>
   <button class="aba" data-aba="graficos"><svg><use href="#i-graf"/></svg>Gráficos</button>
   <button class="aba" data-aba="ajustes"><svg><use href="#i-ajuste"/></svg>Ajustes</button>
 </nav>
 
+<!-- Formulário de lançamento -->
 <dialog id="modal">
-  <form id="form" method="dialog" class="pedra">
+  <form id="form" class="pedra" novalidate>
     <h3 id="formTitulo">Novo lançamento</h3>
     <div class="tipo" id="tipos"></div>
     <p class="dica" id="dicaTipo"></p>
     <label class="campo">Valor (R$)
-      <input id="fValor" inputmode="decimal" placeholder="0,00" required autocomplete="off">
+      <input id="fValor" inputmode="decimal" placeholder="0,00" autocomplete="off" enterkeyhint="next">
+    </label>
+    <label class="campo" id="campoCofre">Cofre
+      <select id="fCofre"></select>
     </label>
     <label class="campo">Descrição
-      <input id="fDesc" placeholder="Ex.: Salário, Aluguel…" maxlength="60">
+      <input id="fDesc" placeholder="Ex.: Salário, Aluguel…" maxlength="60" autocomplete="off">
     </label>
     <label class="campo" id="campoCat">Categoria
-      <input id="fCat" list="cats" placeholder="Ex.: Moradia" maxlength="30">
-      <datalist id="cats"></datalist>
+      <input id="fCat" list="cats" placeholder="Ex.: Moradia" maxlength="30" autocomplete="off">
     </label>
     <label class="campo">Data
-      <input id="fData" type="date" required>
+      <input id="fData" type="date">
     </label>
     <label class="check">
       <input id="fFeito" type="checkbox" checked>
       <span id="fFeitoTxt">Já recebi</span>
     </label>
-    <label class="campo" id="campoRepetir">Repetir nos próximos meses
-      <select id="fRepetir">
-        <option value="0">Não repetir</option>
-        <option value="2">2 meses</option>
-        <option value="3">3 meses</option>
-        <option value="6">6 meses</option>
-        <option value="12">12 meses</option>
-      </select>
+    <label class="check" id="campoFixa">
+      <input id="fFixa" type="checkbox">
+      <span>Repetir todo mês (conta fixa)</span>
     </label>
+    <p class="dica" id="dicaFixa" hidden>É uma conta fixa: a mudança vale só para este mês. Para mudar todos os meses, vá em Ajustes → Contas fixas.</p>
     <div class="botoes">
       <button type="button" id="cancelar" class="btn fantasma">Cancelar</button>
       <button type="submit" class="btn">Salvar</button>
@@ -206,7 +234,21 @@
   </form>
 </dialog>
 
-<div id="toast" class="toast" role="status"></div>
+<!-- Formulário genérico (cofres, contas fixas, limites) -->
+<dialog id="dlg">
+  <form id="dlgForm" class="pedra" novalidate>
+    <h3 id="dlgTitulo"></h3>
+    <div id="dlgCampos"></div>
+    <div class="botoes">
+      <button type="button" id="dlgCancelar" class="btn fantasma">Cancelar</button>
+      <button type="submit" class="btn">Salvar</button>
+    </div>
+    <button type="button" id="dlgExcluir" class="btn perigo" hidden>Excluir</button>
+  </form>
+</dialog>
+
+<datalist id="cats"></datalist>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script src="app.js"></script>
 </body>
